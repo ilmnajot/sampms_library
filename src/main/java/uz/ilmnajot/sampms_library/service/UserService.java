@@ -44,7 +44,7 @@ public interface UserService {
 
     ApiResponse getBooksToStudent(Long bookId, Long userId, int amount);
 
-    ApiResponse returnBook(Long studentId, Long bookId);
+    ApiResponse returnBook(Long userId, Long bookId);
 
     ApiResponse addBook(BookRequest request);
 

@@ -36,7 +36,7 @@ public class Constants {
     public static final String GET_MY_BOOK= "/get_my_book/{userId}";
     public static final String GET_BOOKS_BY_CATEGORY= "/get_books_by_category";
     public static final String GET_BOOKS_BY_AUTHOR= "/get_books_by_author/{author_id}";
-    public static final String RETURN_BOOK = "/return_book/{studentId}/{bookId}";
+    public static final String RETURN_BOOK = "/return_book/{bookId}/{userId}";
 
 
     //********************TEACHERS****************

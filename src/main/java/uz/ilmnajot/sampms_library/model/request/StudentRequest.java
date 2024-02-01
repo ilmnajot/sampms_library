@@ -37,18 +37,5 @@ public class StudentRequest {
 
     private Status status;
 
-    public static StudentRequest studentRequestToDto(User user){
-        StudentRequest request = new StudentRequest();
-        request.setName(user.getName());
-        request.setSurname(user.getSurname());
-        request.setEmail(user.getEmail());
-        request.setGraduationStatus(false);
-        request.setRoleId(user.getRoleId());
-        request.setStudentGrade(user.getStudentGrade());
-        request.setSchoolName(SchoolName.SAMARQAND_SHAHRIDAGI_PREZIDENT_MAKTABI);
-        request.setGender(user.getGender());
-        request.setPosition(user.getPosition());
-        request.setStatus(user.getStatus());
-        return request;
-    }
+
 }

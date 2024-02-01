@@ -18,8 +18,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findBookByBookName(String bookName);
     @Query(value="SELECT * FROM books WHERE books.category LIKE :category", nativeQuery = true)
     Page<Book> findAllBooksByCategory(@Param("category") String category, Pageable pageable);
-    @Query(value="SELECT * FROM books WHERE books.author_id LIKE :author_id", nativeQuery = true)
-    Page<Book> findAllBooksByAuthorId(@Param("author_id") Long author_id, Pageable pageable);
+//    @Query(value="SELECT * FROM books WHERE books.author_id LIKE :author_id", nativeQuery = true)
+    Page<Book> findAllBooksByAuthorId(/*@Param("author_id")*/ Long author_id, Pageable pageable);
 
 
     Page<Book> findBookByQuantityLessThan(int quantity, Pageable pageable);

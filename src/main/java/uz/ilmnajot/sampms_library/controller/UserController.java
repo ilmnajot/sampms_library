@@ -1,5 +1,4 @@
 package uz.ilmnajot.sampms_library.controller;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,6 @@ import uz.ilmnajot.sampms_library.model.request.BookRequest;
 import uz.ilmnajot.sampms_library.model.request.StudentRequest;
 import uz.ilmnajot.sampms_library.model.request.UserRequest;
 import uz.ilmnajot.sampms_library.service.UserService;
-
 import javax.validation.Valid;
 
 import static uz.ilmnajot.sampms_library.utils.Constants.*;
@@ -83,7 +81,7 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping(GET_MY_BOOK)
+    @GetMapping(GET_MY_BOOK) // NO WORKING
     public HttpEntity<ApiResponse> getMyBook(
             @PathVariable(name = "userId") Long userId) {
         ApiResponse allMyBook = userService.getAllMyBook(userId);
@@ -92,7 +90,7 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping(SEARCH)
+    @GetMapping(SEARCH) // NO WORKING
     public HttpEntity<ApiResponse> getBookByName(@RequestParam String bookName) {
         ApiResponse book = userService.getBookByBookName(bookName);
         return ResponseEntity.status(book.isSuccess() ? 200 : 409).body(book);
@@ -108,7 +106,7 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping(GET_BOOKS_BY_AUTHOR)
+    @GetMapping(GET_BOOKS_BY_AUTHOR) //NOT WORKING
     public HttpEntity<ApiResponse> getAllBooksByAuthor(@RequestParam(name = "page", defaultValue = "0") int page,
                                                        @RequestParam(name = "size", defaultValue = "9") int size,
                                                        @PathVariable(name = "author_id") Long author_id) {
@@ -118,16 +116,26 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PostMapping(RETURN_BOOK)
+    @PostMapping(RETURN_BOOK) //no working
     public HttpEntity<ApiResponse> returnBook(
-            @PathVariable(name = "studentId") Long studentId,
-            @PathVariable(name = "bookId") Long bookId) {
-        ApiResponse apiResponse = userService.returnBook(studentId, bookId);
+            @PathVariable(name = "bookId") Long bookId,
+            @PathVariable(name = "userId") Long userId) {
+        ApiResponse apiResponse = userService.returnBook(bookId, userId);
         return apiResponse != null
                 ? ResponseEntity.ok(apiResponse)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
+
+    @PostMapping(BOOK_TO_STUDENT)
+    public HttpEntity<ApiResponse> bookToStudent(
+            @PathVariable(name = "bookId") Long bookId,
+            @PathVariable(name = "userId") Long userId) {
+        ApiResponse bookToStudent = userService.getBookToStudent(bookId, userId);
+        return bookToStudent != null
+                ? ResponseEntity.status(HttpStatus.ACCEPTED).body(bookToStudent)
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
 
     @PostMapping(INCREASE_BOOK)
     public HttpEntity<ApiResponse> incrementBook(
@@ -149,7 +157,6 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-
 //    @GetMapping(GET_ALL_DELETED_BOOK)
 //    public HttpEntity<ApiResponse> getAllDeletedBook(
 //            @RequestParam(name = "page", defaultValue = "0") int page,
@@ -158,6 +165,7 @@ public class UserController {
 //        return allDeletedBook != null
 //                ? ResponseEntity.ok(allDeletedBook)
 //                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
 //    }
 
 
@@ -227,16 +235,6 @@ public class UserController {
         ApiResponse student = userService.graduateStudent(request, userId);
         return student != null
                 ? ResponseEntity.ok(student)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
-    @PostMapping(BOOK_TO_STUDENT)
-    public HttpEntity<ApiResponse> bookToStudent(
-            @PathVariable(name = "bookId") Long bookId,
-            @PathVariable(name = "userId") Long userId) {
-        ApiResponse bookToStudent = userService.getBookToStudent(bookId, userId);
-        return bookToStudent != null
-                ? ResponseEntity.status(HttpStatus.ACCEPTED).body(bookToStudent)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
