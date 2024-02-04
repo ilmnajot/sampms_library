@@ -20,6 +20,7 @@ public class UserRequest {
     private String password;
 
     private Long roleId;
+
     private SchoolName schoolName;
 
     private Gender gender;
@@ -56,18 +57,18 @@ public class UserRequest {
 //    private StudentGrade studentGrade;
 
 
-    public static UserRequest userToDto(User user){
-        UserRequest request = new UserRequest();
-        request.setName(user.getName());
-        request.setSurname(user.getSurname());
-        request.setEmail(user.getEmail());
-        request.setPassword(user.getPassword());
-        request.setRoleId(user.getRoleId());
-        request.setSchoolName(SchoolName.SAMARQAND_SHAHRIDAGI_PREZIDENT_MAKTABI);
-        request.setGender(request.getGender());
-        request.setPosition(request.getPosition());
-        request.setStatus(Status.NOT_IN_DEPT);
-        return request;
-
-    }
+//    public static UserRequest userToDto(User user){
+//        UserRequest request = new UserRequest();
+//        request.setName(user.getName());
+//        request.setSurname(user.getSurname());
+//        request.setEmail(user.getEmail());
+//        request.setPassword(user.getPassword());
+//        request.setRoleId(user.getRoleId());
+//        request.setSchoolName(request.getSchoolName());
+//        request.setGender(request.getGender());
+//        request.setPosition(request.getPosition());
+//        request.setStatus(Status.NOT_IN_DEPT);
+//        return request;
+//
+//    }
 }

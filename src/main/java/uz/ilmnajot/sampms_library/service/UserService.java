@@ -34,17 +34,17 @@ public interface UserService {
 
     ApiResponse getAllStudents(int page, int size);
 
-    ApiResponse deleteStudent(Long id);
+    ApiResponse deleteUser(Long id);
 
     ApiResponse updateStudent(StudentRequest request, Long studentId);
 
     ApiResponse graduateStudent(StudentRequest request, Long userId);
 
-    ApiResponse getBookToStudent(Long bookId, Long userId);
+    ApiResponse getBookToUser(Long bookId, Long userId);
 
     ApiResponse getBooksToStudent(Long bookId, Long userId, int amount);
 
-    ApiResponse returnBook(Long userId, Long bookId);
+    ApiResponse returnBook(Long bookId, Long userId);
 
     ApiResponse addBook(BookRequest request);
 
@@ -69,9 +69,11 @@ public interface UserService {
 
     ApiResponse getAllUser(int page, int size);
 
-    ApiResponse deleteUser(Long id);
+//    ApiResponse deleteUser(Long id);
 
-    ApiResponse updateUser(Long teacherId, UserRequest request);
+    ApiResponse updateUser(Long userId, UserRequest request);
 
-    ApiResponse returnBookByUser(Long userId, Long bookId);
+//    ApiResponse returnBookByUser(Long bookId, Long userId);
+
+//    ApiResponse getBookToUser(Long bookId, Long userId);
 }

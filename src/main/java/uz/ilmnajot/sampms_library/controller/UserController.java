@@ -8,6 +8,7 @@ import uz.ilmnajot.sampms_library.model.request.BookRequest;
 import uz.ilmnajot.sampms_library.model.request.StudentRequest;
 import uz.ilmnajot.sampms_library.model.request.UserRequest;
 import uz.ilmnajot.sampms_library.service.UserService;
+
 import javax.validation.Valid;
 
 import static uz.ilmnajot.sampms_library.utils.Constants.*;
@@ -116,22 +117,22 @@ public class UserController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PostMapping(RETURN_BOOK) //no working
-    public HttpEntity<ApiResponse> returnBook(
-            @PathVariable(name = "bookId") Long bookId,
-            @PathVariable(name = "userId") Long userId) {
-        ApiResponse apiResponse = userService.returnBook(bookId, userId);
-        return apiResponse != null
-                ? ResponseEntity.ok(apiResponse)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+//    @PostMapping(RETURN_BOOK) //no working
+//    public HttpEntity<ApiResponse> returnBook(
+//            @PathVariable(name = "bookId") Long bookId,
+//            @PathVariable(name = "userId") Long userId) {
+//        ApiResponse apiResponse = userService.returnBook(bookId, userId);
+//        return apiResponse != null
+//                ? ResponseEntity.ok(apiResponse)
+//                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//    }
 
 
-    @PostMapping(BOOK_TO_STUDENT)
-    public HttpEntity<ApiResponse> bookToStudent(
+    @PostMapping(BOOK_TO_USER)
+    public HttpEntity<ApiResponse> bookToUser(
             @PathVariable(name = "bookId") Long bookId,
             @PathVariable(name = "userId") Long userId) {
-        ApiResponse bookToStudent = userService.getBookToStudent(bookId, userId);
+        ApiResponse bookToStudent = userService.getBookToUser(bookId, userId);
         return bookToStudent != null
                 ? ResponseEntity.status(HttpStatus.ACCEPTED).body(bookToStudent)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -216,7 +217,7 @@ public class UserController {
 
     @DeleteMapping(DELETE_STUDENT)
     public HttpEntity<ApiResponse> deleteStudent(@PathVariable Long id) {
-        ApiResponse student = userService.deleteStudent(id);
+        ApiResponse student = userService.deleteUser(id);
         return student != null
                 ? ResponseEntity.ok(student)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -285,36 +286,35 @@ public class UserController {
                 ? ResponseEntity.status(HttpStatus.OK).body(teacher)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-
     @PutMapping(UPDATE_USER)
     public HttpEntity<ApiResponse> updateUser(
-            @PathVariable(name = "teacherId") Long teacherId,
+            @PathVariable(name = "userId") Long userId,
             @RequestBody UserRequest request) {
-        ApiResponse teacher = userService.updateUser(teacherId, request);
+        ApiResponse teacher = userService.updateUser(userId, request);
         return teacher != null
                 ? ResponseEntity.status(HttpStatus.OK).body(teacher)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @PostMapping(RETURN_BOOK_USER)
-    public HttpEntity<ApiResponse> returnBookByUser(
-            @PathVariable(name = "userId") Long userId,
-            @PathVariable Long bookId) {
-        ApiResponse apiResponse = userService.returnBookByUser(userId, bookId);
+    @PostMapping(RETURN_BOOK) // no working
+    public HttpEntity<ApiResponse> returnBook(
+            @PathVariable(name = "bookId") Long bookId,
+            @PathVariable(name = "userId") Long userId) {
+        ApiResponse apiResponse = userService.returnBook(bookId, userId);
         return apiResponse != null
                 ? ResponseEntity.status(HttpStatus.ACCEPTED).body(apiResponse)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @PostMapping(BOOK_TO_USER)
-    public HttpEntity<ApiResponse> bookToTeacher(
-            @PathVariable(name = "bookId") Long bookId,
-            @PathVariable(name = "userId") Long userId) {
-        ApiResponse getBookToTeacher = userService.getBookToTeacher(bookId, userId);
-        return getBookToTeacher != null
-                ? ResponseEntity.status(HttpStatus.ACCEPTED).body(getBookToTeacher)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
+//    @PostMapping(BOOK_TO_USER)
+//    public HttpEntity<ApiResponse> bookToTeacher(
+//            @PathVariable(name = "bookId") Long bookId,
+//            @PathVariable(name = "userId") Long userId) {
+//        ApiResponse getBookToTeacher = userService.getBookToTeacher(bookId, userId);
+//        return getBookToTeacher != null
+//                ? ResponseEntity.status(HttpStatus.ACCEPTED).body(getBookToTeacher)
+//                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//    }
 
 
 }

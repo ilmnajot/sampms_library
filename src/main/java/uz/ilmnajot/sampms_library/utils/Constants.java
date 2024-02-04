@@ -15,7 +15,7 @@ public class Constants {
     public static final String UPDATE_STUDENT = "/update_student/{userId}";
     public static final String GRADUATE_STUDENT = "/graduate_student/{userId}";
     public static final String DELETE_STUDENT = "/delete_student/{id}";
-    public static final String BOOK_TO_STUDENT = "/book_to_student/{bookId}/{userId}";
+    public static final String BOOK_TO_USER = "/book_to_user/{bookId}/{userId}";
 
 
 
@@ -42,14 +42,14 @@ public class Constants {
     //********************TEACHERS****************
 
     public static final String ADD_USER = "/add_user";
-    public static final String GET_USER = "/get_teacher/{id}";
-    public static final String GET_ALL_USER = "/get_all_teacher";
-    public static final String GET_ALL_NON_EXIST_TEACHER = "/get_all_non_exist_teacher";
-    public static final String UPDATE_USER = "/update_teacher/{teacherId}";
+    public static final String GET_USER = "/get_user/{id}";
+    public static final String GET_ALL_USER = "/get_all_user";
+    public static final String GET_ALL_NON_EXIST_TEACHER = "/get_all_non_exist_user";
+    public static final String UPDATE_USER = "/update_user/{userId}";
     //    public static final String GRADUATE_STUDENT = "/graduate_student/{studentId}";
-    public static final String DELETE_USER = "/delete_teacher/{id}";
+    public static final String DELETE_USER = "/delete_user/{id}";
 //    public static final String BOOK_TO_USER = "/book_to_teacher/{bookId}/{teacherId}";
-    public static final String RETURN_BOOK_USER = "/return_book/{userId}/{bookId}";
-    public static final String BOOK_TO_USER = "/book_to_user/{userId}/{bookId}";
+//    public static final String RETURN_BOOK = "/return_book/{userId}/{bookId}";
+//    public static final String BOOK_TO_USER = "/book_to_user/{userId}/{bookId}";
 
 }

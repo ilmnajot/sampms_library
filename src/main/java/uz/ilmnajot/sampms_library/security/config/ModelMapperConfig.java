@@ -1,4 +1,4 @@
-package uz.ilmnajot.sampms_library.config;
+package uz.ilmnajot.sampms_library.security.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

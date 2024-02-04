@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ilmnajot.sampms_library.Entity.Book;
 import uz.ilmnajot.sampms_library.Entity.User;
-import uz.ilmnajot.sampms_library.enums.Position;
-import uz.ilmnajot.sampms_library.enums.SchoolName;
 import uz.ilmnajot.sampms_library.enums.Status;
 import uz.ilmnajot.sampms_library.exception.BookException;
 import uz.ilmnajot.sampms_library.exception.UserException;
@@ -19,6 +17,7 @@ import uz.ilmnajot.sampms_library.model.request.StudentRequest;
 import uz.ilmnajot.sampms_library.model.request.UserRequest;
 import uz.ilmnajot.sampms_library.model.response.BookResponse;
 import uz.ilmnajot.sampms_library.model.response.StudentResponse;
+import uz.ilmnajot.sampms_library.model.response.UserResponse;
 import uz.ilmnajot.sampms_library.repository.BookRepository;
 import uz.ilmnajot.sampms_library.repository.UserRepository;
 
@@ -235,13 +234,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse deleteStudent(Long id) {
+    public ApiResponse deleteUser(Long id) {
         User user = getUserById(id);
         if (user != null) {
-            if(user.getStatus().equals(Status.NOT_IN_DEPT) || user.getBorrowedBook()==0){
-            userRepository.deleteById(id);
-            return new ApiResponse("success", true, user.getName() + " has been removed from the list of students");
-        }
+            if (user.getStatus().equals(Status.NOT_IN_DEPT) || user.getBorrowedBook() == 0) {
+                userRepository.deleteById(id);
+                return new ApiResponse("success", true, user.getName() + " has been removed from the list of students");
+            }
             throw new BookException(user.getName() + " should return the books before removing the user", HttpStatus.BAD_REQUEST);
         }
         throw new UserException("the student is not found", HttpStatus.NOT_FOUND);
@@ -250,13 +249,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse updateStudent(StudentRequest request, Long studentId) {
         User user = getUserById(studentId);
+        user.setId(studentId);
         user.setName(request.getName());
         user.setSurname(request.getSurname());
         user.setEmail(request.getEmail());
+        user.setGraduationStatus(request.isGraduationStatus());
         user.setStudentGrade(request.getStudentGrade());
         user.setSchoolName(request.getSchoolName());
         user.setGender(request.getGender());
         user.setPosition(request.getPosition());
+        user.setRoleId(request.getRoleId());
         User avedUser = userRepository.save(user);
         StudentResponse studentResponse = StudentResponse.studentResponseToDto(avedUser);
         return new ApiResponse("success", true, studentResponse);
@@ -275,8 +277,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse getBookToStudent(Long bookId, Long userId) {
+    public ApiResponse getBookToUser(Long bookId, Long userId) {
         Optional<Book> bookOptional = bookRepository.findBookByIdAndQuantityGreaterThan(bookId, 0);
+        if (bookOptional.isEmpty()) {
+            throw new BookException("the book is not available", HttpStatus.NOT_FOUND);
+        }
         Book book = bookOptional.get();
         User user = getUserById(userId);
 
@@ -286,10 +291,31 @@ public class UserServiceImpl implements UserService {
         user.setBorrowedBook(user.getBorrowedBook() + 1);
         user.setStatus(Status.BORROWED);
         bookRepository.save(book);
-        User savedStudent = userRepository.save(user);
-        StudentResponse request = StudentResponse.studentResponseToDto(savedStudent);
-        return new ApiResponse("success", true, request);
+        userRepository.save(user);
+//        StudentResponse request = StudentResponse.studentResponseToDto(savedStudent);
+        return new ApiResponse("success", true, "the book successfully registered to the user");
     }
+
+//    @Override
+//    public ApiResponse returnBookByUser(Long bookId, Long userId) {
+//        Book book = getBookById(bookId);
+//        User user = getUserById(userId);
+//        int numberOfBook = user.getBorrowedBook();
+//        Book userBook = user.getBook();
+//
+////
+////        if (numberOfBook > 0 && book.getIsbn().equals(userBook.getIsbn())) {
+////            throw new BookException("the book is already borrowed", HttpStatus.BAD_REQUEST);
+////        }
+//        book.setBookId(bookId);
+//        user.setUserId(userId);
+//        book.setQuantity(book.getQuantity() + 1);
+//        user.setBorrowedBook(user.getBorrowedBook() - 1);
+//        User savedUser = userRepository.save(user);
+//        bookRepository.save(book);
+//        UserResponse userResponse = UserResponse.userResponseToDto(savedUser);
+//        return new ApiResponse("success", true, "the book successfully received or returned!");
+//    }
 
     @Override
     public ApiResponse getBooksToStudent(Long bookId, Long userId, int amount) {
@@ -298,19 +324,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiResponse returnBook(Long userId, Long bookId) {
+    public ApiResponse returnBook(Long bookId, Long userId) {
         Book book = getBookById(bookId);
         User user = getUserById(userId);
-        if (user.getBorrowedBook() >= 0 && user.getBook().getId().equals(book.getId())) {
+        if (user.getBorrowedBook() > 0) {
             user.setBorrowedBook(user.getBorrowedBook() - 1);
             book.setQuantity(book.getQuantity() + 1);
             if ((user.getBorrowedBook() == 0)) {
                 user.setStatus(Status.NOT_IN_DEPT);
+            }else {
+                user.setStatus(Status.BORROWED);
             }
             bookRepository.save(book);
             User savedStudent = userRepository.save(user);
             StudentResponse request = StudentResponse.studentResponseToDto(savedStudent);
-            return new ApiResponse("success", true, request);
+            return new ApiResponse("success", true, "the book has been returned successfully");
         }
         throw new BookException("there is no book to return", HttpStatus.BAD_REQUEST);
     }
@@ -409,28 +437,39 @@ public class UserServiceImpl implements UserService {
             throw new UserException("User already exists or registered", HttpStatus.BAD_REQUEST);
         }
         User user = new User();
+
         user.setName(request.getName());
         user.setSurname(request.getSurname());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setRoleId(request.getRoleId());
-        user.setSchoolName(SchoolName.SAMARQAND_SHAHRIDAGI_PREZIDENT_MAKTABI);
+        user.setSchoolName(request.getSchoolName());
         user.setGender(request.getGender());
         user.setPosition(request.getPosition());
         user.setStatus(request.getStatus());
         User savedUser = userRepository.save(user);
-        UserRequest userRequest = UserRequest.userToDto(savedUser);
+        UserResponse userRequest = UserResponse.userResponseToDto(savedUser);
         return new ApiResponse("success", true, userRequest);
     }
 
     @Override
     public ApiResponse getUser(Long id) {
-        return null;
+        User user = getUserById(id);
+        UserResponse userResponse = UserResponse.userResponseToDto(user);
+        return new ApiResponse("success", true, userResponse);
     }
 
     @Override
     public ApiResponse getAllUser(int page, int size) {
-        return null;
+        List<User> users = userRepository.findAll(Sort.by("id"));
+        if (!users.isEmpty()) {
+            List<UserResponse> requests = users
+                    .stream()
+                    .map(UserResponse::userResponseToDto)
+                    .toList();
+            return new ApiResponse("success", true, requests);
+        }
+        throw new BookException("there is no student found", HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -448,18 +487,28 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public ApiResponse deleteUser(Long id) {
-        return null;
-    }
+//    @Override
+//    public ApiResponse deleteUser(Long id) {
+//        return null;
+//    }
 
     @Override
-    public ApiResponse updateUser(Long teacherId, UserRequest request) {
-        return null;
+    public ApiResponse updateUser(Long userId, UserRequest request) {
+
+        User user = getUserById(userId);
+        user.setId(userId);
+        user.setName(request.getName());
+        user.setSurname(request.getSurname());
+        user.setEmail(request.getEmail());
+        user.setRoleId(request.getRoleId());
+        user.setSchoolName(request.getSchoolName());
+        user.setGender(request.getGender());
+        user.setPosition(request.getPosition());
+        user.setStatus(request.getStatus());
+        User savedUser = userRepository.save(user);
+        UserResponse userResponse = UserResponse.userResponseToDto(savedUser);
+        return new ApiResponse("success", true, userResponse);
     }
 
-    @Override
-    public ApiResponse returnBookByUser(Long userId, Long bookId) {
-        return null;
-    }
+
 }
