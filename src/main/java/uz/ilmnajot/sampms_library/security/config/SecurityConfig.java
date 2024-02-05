@@ -16,11 +16,12 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
+
+    private static final String FREE_WAY = "/api/auth/**";
+
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
-
-    private static final String FREE_WAY = "/api/auth/**";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

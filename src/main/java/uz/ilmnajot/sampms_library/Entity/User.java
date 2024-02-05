@@ -29,7 +29,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private boolean graduationStatus;
 
-    private int gmailCode;
+    private String gmailCode;
 
     private int borrowedBook;
 

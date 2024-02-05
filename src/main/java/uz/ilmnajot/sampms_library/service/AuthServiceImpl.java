@@ -12,9 +12,11 @@ import uz.ilmnajot.sampms_library.exception.UserException;
 import uz.ilmnajot.sampms_library.model.common.ApiResponse;
 import uz.ilmnajot.sampms_library.model.request.LoginRequest;
 import uz.ilmnajot.sampms_library.model.request.StudentRequest;
+import uz.ilmnajot.sampms_library.model.request.UserRequest;
 import uz.ilmnajot.sampms_library.model.response.LoginResponse;
 import uz.ilmnajot.sampms_library.repository.UserRepository;
 import uz.ilmnajot.sampms_library.security.jwt.JwtProvider;
+import uz.ilmnajot.sampms_library.service.AuthService;
 
 import java.util.Optional;
 import java.util.Random;
@@ -40,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ApiResponse registerUser(StudentRequest request) {
+    public ApiResponse registerStudent(StudentRequest request) {
         Optional<User> optionalUser = userRepository.findUserByEmail(request.getEmail());
         if (optionalUser.isPresent()) {
             throw new UserException("the user already exists with email " + request.getEmail());
@@ -49,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
         user.setName(request.getName());
         user.setSurname(request.getSurname());
         user.setEmail(request.getEmail());
-//        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setGraduationStatus(request.isGraduationStatus());
         user.setRoleId(request.getRoleId());
         user.setStudentGrade(request.getStudentGrade());
@@ -59,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
         user.setStatus(request.getStatus());
 
         int randomNumber = new Random().nextInt(999999);
-        user.setGmailCode(Integer.parseInt(String.valueOf(randomNumber).substring(0, 4)));
+        user.setGmailCode(String.valueOf(randomNumber).substring(0, 4));
         mailService.sendMail(user.getEmail(), String.valueOf(user.getGmailCode()));
         userRepository.save(user);
         return new ApiResponse("success", true, "4-digit code has been sent to you email address, please verify");
@@ -74,6 +76,11 @@ public class AuthServiceImpl implements AuthService {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(token);
         return new ApiResponse("success", true, loginResponse);
+    }
+
+    @Override
+    public ApiResponse registerStudent(UserRequest request) {
+        return null;
     }
 
     @Override

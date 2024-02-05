@@ -61,7 +61,7 @@ public class DataLoader implements CommandLineRunner {
                             .password(passwordEncoder.encode("password"))
                             .password("password")
                             .graduationStatus(false)
-                            .gmailCode(12345)
+                            .gmailCode("12345")
                             .borrowedBook(2)
                             .role(teacher_role)
                             .bookId(1L)
