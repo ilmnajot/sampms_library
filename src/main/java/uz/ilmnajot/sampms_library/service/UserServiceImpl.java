@@ -1,5 +1,8 @@
 package uz.ilmnajot.sampms_library.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +39,7 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = modelMapper;
         this.bookRepository = bookRepository;
     }
+
 
 
     //********************BOOK_SECTION**********************//
@@ -365,7 +369,9 @@ public class UserServiceImpl implements UserService {
             book.setQuantity(request.getQuantity());
             book.setAuthorId(request.getAuthorId());
             book.setCategory(request.getCategory());
+
             Book savedBook = bookRepository.save(book);
+
             BookResponse bookResponse = BookResponse.bookToDto(savedBook);
             return new ApiResponse("success", true, bookResponse);
         }

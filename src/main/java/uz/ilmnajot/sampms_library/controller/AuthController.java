@@ -26,7 +26,7 @@ public class AuthController {
 //    @PostMapping(REGISTER_STUDENT)
 //    public HttpEntity<ApiResponse> registerStudent(@RequestBody StudentRequest request) {
 //        ApiResponse user = userService.addStudent(request);
-//        return user != null
+//        return user !=                                                                                                                                                                null
 //                ? ResponseEntity.ok(user)
 //                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 //    }
@@ -45,12 +45,7 @@ public class AuthController {
                 ? ResponseEntity.status(HttpStatus.NOT_FOUND).body(user)
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-//    @GetMapping("/loginTteacher")
-//    public ModelAndView showTeacherLoginPage(){
-//        ModelAndView mav = new ModelAndView("teacher-login-form");
-//        mav.addObject("user", new UserRequest());
-//        return mav;
-//    }
+
     @PostMapping(LOGIN)
     public HttpEntity<ApiResponse> login(@RequestBody LoginRequest request) {
         ApiResponse login = authService.login(request);

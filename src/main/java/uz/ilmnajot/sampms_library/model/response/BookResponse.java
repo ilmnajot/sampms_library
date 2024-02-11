@@ -25,10 +25,6 @@ public class BookResponse {
 
     private Category category;
 
-    public BookResponse(BookResponse bookResponse) {
-
-    }
-
     public static BookResponse bookToDto(Book book){
     BookResponse response = new BookResponse();
     response.setId(book.getId());

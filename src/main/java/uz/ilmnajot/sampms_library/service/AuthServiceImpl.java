@@ -79,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ApiResponse registerStudent(UserRequest request) {
+    public ApiResponse registerStudent(UserRequest request)  {
         return null;
     }
 
