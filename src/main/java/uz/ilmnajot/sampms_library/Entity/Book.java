@@ -11,8 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity(name = "books")
+@Builder@Entity(name = "books")
 public class Book extends BaseEntity {
 
     private String name;

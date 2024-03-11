@@ -64,7 +64,7 @@ public class DataLoader implements CommandLineRunner {
                             .gmailCode("12345")
                             .borrowedBook(2)
                             .role(teacher_role)
-                            .bookId(1L)
+//                            .bookId(1L)
                             .schoolName(SchoolName.SAMARQAND_SHAHRIDAGI_PREZIDENT_MAKTABI)
                             .position(Position.TEACHER)
                             .status(Status.BORROWED)

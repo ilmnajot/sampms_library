@@ -289,7 +289,7 @@ public class AdminController {
     }
     @PutMapping(UPDATE_USER)
     public HttpEntity<ApiResponse> updateUser(
-            @PathVariable(name = "userId") Long userId,
+            @PathVariable(name = "userId") Long  userId,
             @RequestBody UserRequest request) {
         ApiResponse teacher = userService.updateUser(userId, request);
         return teacher != null

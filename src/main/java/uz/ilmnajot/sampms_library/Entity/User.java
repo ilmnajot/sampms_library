@@ -40,8 +40,8 @@ public class User extends BaseEntity implements UserDetails {
 //            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Book book;
 
-    @Column(name = "book_id", insertable = false, updatable = false)
-    private Long bookId;
+//    @Column(name = "book_id", insertable = false, updatable = false)
+//    private Long bookId;
 
     @Column(name = "userId", insertable = false, updatable = false)
     private Long userId;

@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ilmnajot.sampms_library.Entity.Book;
 import uz.ilmnajot.sampms_library.Entity.User;
+import uz.ilmnajot.sampms_library.Entity.UserBook;
 import uz.ilmnajot.sampms_library.enums.Status;
+import uz.ilmnajot.sampms_library.enums.UserBookStatus;
 import uz.ilmnajot.sampms_library.exception.BookException;
 import uz.ilmnajot.sampms_library.exception.UserException;
 import uz.ilmnajot.sampms_library.model.common.ApiResponse;
@@ -24,6 +26,7 @@ import uz.ilmnajot.sampms_library.model.response.UserResponse;
 import uz.ilmnajot.sampms_library.repository.BookRepository;
 import uz.ilmnajot.sampms_library.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -287,16 +290,19 @@ public class UserServiceImpl implements UserService {
             throw new BookException("the book is not available", HttpStatus.NOT_FOUND);
         }
         Book book = bookOptional.get();
-        User user = getUserById(userId);
+        UserBook userBook  =  new UserBook();
 
-        user.setUserId(userId);
-        book.setBookId(bookId);
+        userBook.setUserId(userId);
+        userBook.setBookId(bookId);
+        userBook.setTokenDate(LocalDateTime.now());
+        userBook.setUserBookStatus(UserBookStatus.TOKEN);
+
+
+
+//        userBookRepository.save(userBook);// todo
+
         book.setQuantity(book.getQuantity() - 1);
-        user.setBorrowedBook(user.getBorrowedBook() + 1);
-        user.setStatus(Status.BORROWED);
         bookRepository.save(book);
-        userRepository.save(user);
-//        StudentResponse request = StudentResponse.studentResponseToDto(savedStudent);
         return new ApiResponse("success", true, "the book successfully registered to the user");
     }
 
@@ -329,9 +335,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResponse returnBook(Long bookId, Long userId) {
+
         Book book = getBookById(bookId);
         User user = getUserById(userId);
-        if (user.getBorrowedBook() > 0) {
+        if (user.getBorrowedBook() > 0) { //userBook dan olinadi|
             user.setBorrowedBook(user.getBorrowedBook() - 1);
             book.setQuantity(book.getQuantity() + 1);
             if ((user.getBorrowedBook() == 0)) {

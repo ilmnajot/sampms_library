@@ -1,5 +1,4 @@
 package uz.ilmnajot.sampms_library.controller;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,6 @@ import uz.ilmnajot.sampms_library.model.request.LoginRequest;
 import uz.ilmnajot.sampms_library.model.request.StudentRequest;
 import uz.ilmnajot.sampms_library.service.AuthService;
 import uz.ilmnajot.sampms_library.service.UserService;
-
 import static uz.ilmnajot.sampms_library.utils.Constants.*;
 
 @RestController
